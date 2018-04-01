@@ -1,0 +1,190 @@
+
+I.An overview of the class hierarchy:
+
+Top Entity:         cmdCenter
+                        |    
+	             stghold          
+	            /       \
+               scout         cache
+	                    /     \
+		      weapon      decoder
+
+(The above classes under cmdCenter are all nested class)
+
+
+		        replacer
+		 |      |      |    |
+	       FIFO    NMRU   LRU  RND
+(The above classes under replacer are all child classes)
+
+cmdCenter is in cmdCenter.h header file
+stghold and scout are in stghold.h header file
+cache, weapon, and decoder are in cache.h header file
+replacer is in replacer.h header file
+
+NOTE: -Some of the implementation of cmdCenter methods
+      will be found in cmdCenter.cpp
+      -Some of the implementation of cache methods
+      will be found in cache.cpp
+II. cmdCenter
+This is the top level class, we will invoke methods
+in this class when we write our main functions.
+
+field:
+ -level_1 (pointer to stghold class)
+ -level_2 (pointer to stghold class)
+ You can think of the above as places where to hold
+ LV_1 and LV_2 caches
+ 
+ -vector<string> allAdddr (We read every line in our
+ test file and store each line into a bucket of vector
+ allAddr for further process)
+
+ -InstnFetch (number of InstnFetch)
+ -InstnMiss  (number of Instruction Fetch Miss)
+ -DatRdFetch (number of data read)
+ -misc (invalid code,other than 0 1 2)
+
+method:
+ -constructor: it will create two new objects of type
+ stghold in the heap and finish defining the  configu-
+ ration of each level (LV1 and LV2)
+
+ -reinStghold: this method will finish creating caches
+ and updating cache information in each stghold
+
+ -readAll: read all lines in test file and store each
+ line into allAddr vector
+
+ -addFetch: add corresponding fetch numbers according to code(code = 0, increment readData fetch by 1)
+
+ -addMiss: add corresponding miss numbers according to
+ code(code = 0, increment datRdMiss by 1)
+
+ -getCode: get the code from "<code> <HexDecimal>"
+ 
+ -read: "read from cache" operation, 
+ (haven't completed)
+ -access: preparation before accessing cache(increment corresponding fetch num),check level exists or not
+
+ -decideOperation: decide operation of writing to
+ cache or reading from  cache
+
+ -simulate: call access method upon each line
+
+
+
+
+III. stghold
+stghold is a class used to create and hold cache objects
+
+field:
+ -config // is this level of cache SPLIT or UNIFIED?
+ -wareHouse // an array of pointers, whose element is
+ pointer to cache object. (I design like this because
+ we don't know how many caches are there in this level
+ if SPLIT then one DATA cache and one INSTRUCTION cache
+ if UNIFIED thsn just one MIXED cache, otherwise no
+ cache)
+
+method:
+ -decideConfig() //ask user about the configuration of
+ this level
+
+ -scoutDispatch //ask user about all the information
+ we need to create an cache(Capacity/Block Size...)
+ 
+ -createWareHouse //according to configuration create
+ correcct number of places to hold cache and create
+ caches with correct type, size, repPolicy according
+ to information given by user
+
+ -maybe more
+
+
+
+IV. scout
+You can think of this as a temporary object, its
+purpose is to ask cache information from user and
+run to stghold to report that information and then it
+sadly dies.
+
+field:
+ - cap  //capacity of cache
+ - bsize //block size of cache
+ - assoc //associatitity 
+ - rep  //replacement policy
+ -wralloc //if write allocation or not
+
+method:
+ -no method.   happy ? :) 
+
+V. cache
+Finally we come to the real cache object, you know what it does.
+
+field:
+ - set
+ - way
+ - rep  //replacement policy
+ - blockSize 
+ - wralloc //write allocation or not
+ - repPolicy //a pointer pointing at an object of type
+               replacer
+             (NOTE: I use polymorphism here because we
+	            will need dynamic dispatch)
+ - readCache //read from cache, still implementing
+ - writeChace //write from cache, still implementing
+method:
+ - constructor: according to information given by
+ scout, we calculate set and way for this cache,
+ set replacement policy correctly and create our table
+ (wpRecorder) to hold weapons(tag,dirty bit, valid)
+
+ - getWay: if user input "n way associative" we need
+ to extract n from this input and transform it into
+ int way
+
+ - createReplacer: according to different replacement
+ policy, we create objects of type child classes
+ and return a pointer pointing at that object because
+ the method to replace are all differrent.
+
+VI. decoder
+
+decoder is just a class used to decode information in
+each line according to the cache we are now accessing,
+so it should be a nested class inside of cache since
+it is cache depended.
+
+
+field:
+ -index  //set num
+ -tag    //tag value
+ -cacheType  //mixed/unified/split(data/memory)
+ -rORW   //is this a read or write?
+
+method:
+ -decodeAddr: A method used to decode address and fill
+ in the fields of decoder with correct information
+
+
+
+VII. weapon
+A.K.A node to add into cache table, when we write something
+into cache or have a read miss and bring something into cache
+
+field:
+ -isDirty
+ -isValid
+ -tag
+
+method:
+ -constructor: default constructor
+ -constructor: customized costructor
+
+VIII. replacer
+ We've discussed about this in the morning, I think by
+ now we all understand how this class work, the implementation
+ of each child class can be found in replacer.h header
+ file
+

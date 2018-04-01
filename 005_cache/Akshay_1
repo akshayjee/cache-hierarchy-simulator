@@ -1,0 +1,129 @@
+Akshay, can you check out whether you can modify your
+code and fit them into these methods? I've already
+provided prototype of these functions to you
+
+Inside of stghold.cpp:
+1.Implement void decideConfig() method. This method asks user
+to decide the configuration of each level's cache
+
+-Firstly, you can find which level you should ask user by looking up the "level" field of this class.
+
+-Next, after user input his desired configuraton, you
+need to fill in the "config" field of this level.
+
+Recall stghold's structure:
+
+class cmdCenter::stghold{
+ public:
+  int level;     //You will use this field
+  class cache;
+  string config; //You will use this field
+  cache ** wareHouse;
+ private:
+  class scout;
+
+
+NOTE:
+(1).If user wants a split cache, you should put SPLIT in
+"config"
+(2).If user wants a unifed cache, you should put UNIFIED in "config"
+(3).If user doesn't want cache for this level, you should
+put NONE in "config". Also note that the type of
+"config" is string
+
+
+2.Implement scout scoutDispatch(string type) method.
+ -This method should ask user about the specification
+ of the cache that the user want according to the parameter passed in
+ -You can expect type to be one of the three values:
+ i   "data"
+ ii  "inst"
+ iii "unified"
+
+ -You can know which level you should ask user now by
+ looking up the "level" field inside of stghold class
+ 
+ For example:
+ If you see type = "data" and level = 1
+ You should create a "scout" object and ask the user
+ information about first level's data cache and then
+ fill in the fields of scout and return this scout
+
+Recall scout's structure:
+class cmdCenter::stghold::scout{ //gather info about each cache
+public:
+  int cap;
+  int bsize;
+  string assoc;
+  string rep;
+  bool wralloc;
+  scout(){}
+};
+
+SOME SPECS:
+- capacity and blocksize are in the unit of byte
+- rep should be one of the following four values:
+  i.   "NMRU"
+  ii.  "LRU"
+  iii. "FIFO"
+  iv.  "RND"
+- wralloc is whether this cache has write allocation
+policy or not
+
+- assoc should be one of the following four values:
+  i.   "FULLY"
+  ii.  "DIRECT"
+  iii. "n WAY" (space to seperate)
+
+
+Inside of cache.cpp:
+1. Implement int getWay(string ass) method
+This method should take a string object and then
+extract the number characters at the beginning of it
+turn it into an integer and return that integer.
+
+-You can expect that the string is always in the
+following format:
+  "X WAY"
+
+-X could be any length
+
+For example:
+If ass = "12854 WAY", then your function should return
+an integer 12854
+
+Inside of cmdCenter.cpp:
+1. Implement int getCode(string & line) method
+This method should take a string reference and then
+extract the code at the beginning of it. Turn it into an integer and return that integer.
+
+2.Implement readAll() method
+This method should open a file (test) read all the lines in this file and store them into a vector<string> in order
+
+For Example:
+if you have a file with the following content:
+ECE550
+ECE551
+ECE552
+
+You should store them into a vector of string in this order:
+ECE550 ECE551  ECE552
+
+You can store them into "allAddr" field in cmdCenter class directly and you can assume this vector is empty the first time you use it.
+
+Recall the structure of cmdCenter:
+class cmdCenter{
+  class stghold;
+  stghold * level_1;
+  stghold * level_2;
+  long InstnFetch;
+  long InstnMiss;
+  long DatRd;
+  long DatRdMiss;
+  long DatWr;
+  long DatWrMiss;
+  long misc;
+  vector<string> allAddr; //You will use this field
+}
+
+UPDATE on Dec.5th 

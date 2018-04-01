@@ -1,0 +1,92 @@
+Major Part To Write:
+
+write function in cmdCenter.cpp
+writeCache function in cache.cpp
+writeMiss function in cache.cpp
+Output Interface
+Destructor for all the classes
+Copy Constructor for all the classes
+Copy Assignment Operator for all the classes
+(Rule of Three)
+
+Test all the functions we have written so far to
+make sure they work correctly
+
+
+
+
+
+We have serveral small functions to write:
+==================================================
+
+XX
+void replaceBlock(int set, int way, decoder & enigma)
+
+This function should be a method inside of
+cache class
+What it does is to find the replace block(weapon)
+overwrite its tag to enigma.tag
+overwrite its addr to enigma.addr
+overwrite its isDirty to 0
+overwrite its isValid to 1
+
+Its declaration is in cache.h
+Please implement it in cache.cpp
+==================================================
+
+void cmdCenter::decideMemAccTime()
+This is a method inside of cmdCenter class, it should
+ask user for the main memory access time and store it
+into field "memAccTime" inside of cmdCenter
+Its declaration is in cmdCenter.h
+Please implement it in cmdCenter.cpp
+
+==================================================
+
+XX
+
+int tagComparator(int set, string tag)
+This is a method inside of cache class. User passes in two arguments:
+-First one specify a set to search
+-Second one specify a tag to look for
+This method should go into the specified set and compare every tag inside
+of this set to the argument tag, if there is one tag that matches with it
+this function returns an integer represents the location of that bucket. Otherwise it should return -1
+
+The declaration of this method is in cache.h
+The implementation of this method is in cache.cpp
+=================================================
+
+
+
+
+We also have some functions that need to be modified:
+
+1.Add new feature to scoutDispatch function
+  -Ask user for information of hitTime of this cache and store the result into "hitTime" field in scout class
+
+XX
+2. Modify getCode function
+ -Cancel one extra operation: Do not discard the first character(the code 0 1 2) after extract it. keep the
+ string invariant
+
+XX
+3.Modify decodeAddr function
+ -This time when take an string of address, when decoding, notice that the first character (code) hasn't been discarded.
+
+
+
+
+
+
+
+
+I know there is a lot of work to do :(
+
+I just read one sentence today that I want to share with you:
+
+The turning point in the process of growing up is
+when you discover the core of strength within you
+that survives all hurt.
+
+A little bit sentimental, right? :|

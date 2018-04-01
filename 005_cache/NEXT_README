@@ -1,0 +1,16 @@
+I've aleardy stored the simulation result in dineroIV_result.txt(the correct result of trace_file_2[750 million lines,a.k.a DineroFull.txt]) so that you don't need to figure out how to use DineroIV.
+
+
+
+
+
+But for any of you who are curious about how to use Dinero IV:
+
+
+
+TO RUN DineroIV, enter ./dineroIV/d4-7 and then enter the following command:
+
+./dineroIV -l1-isize 16384 -l1-iassoc 1 -l1-ibsize 32  -l1-dsize 16384 -l1-dbsize 32 -l1-dassoc 1  -l2-usize 262144 -l2-ubsize 64 -l2-uassoc 4 -informat d < ../../DineroFull.din
+
+
+Hit Enter and wait for a few seconds, you will see the simulation result given by DineroIV, which should be the correct result of the second trace file (750 million)
